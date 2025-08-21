@@ -215,12 +215,13 @@ function App() {
       })
       setStatus(`Stream ended unexpectedly. Found ${stocks.length} stocks (${clientFiltered} filtered out)`)
       setIsScanning(false)
-    } catch (error: any) {
-      if (error.name === 'AbortError') {
+    } catch (error: unknown) {
+      if (error instanceof Error && error.name === 'AbortError') {
         setStatus('Scan cancelled')
       } else {
         console.error('Scanning failed:', error)
-        setStatus(`Error: ${error.message}. Make sure your backend is running on ${API_BASE_URL}`)
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred'
+        setStatus(`Error: ${errorMessage}. Make sure your backend is running on ${API_BASE_URL}`)
       }
       setIsScanning(false)
     }
