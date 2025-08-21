@@ -103,7 +103,7 @@ function App() {
               console.log('📨 Raw SSE message:', data.type, data.stock?.ticker || '')
               
               switch (data.type) {
-                case 'start':
+                case 'start': {
                   setProgress(prev => ({ ...prev, total: data.total_symbols }))
                   setUniverseInfo({
                     size: data.universe_size || data.total_symbols,
@@ -115,8 +115,9 @@ function App() {
                   console.log('📝 Backend filters:', data.filters)
                   console.log('🎯 Scan started with', data.total_symbols, 'symbols to process')
                   break
+                }
 
-                case 'result':
+                case 'result': {
                   // Debug: Log stock data received
                   console.log('📈 Stock result received:', data.stock)
                   console.log('💰 Market cap data:', {
@@ -172,14 +173,16 @@ function App() {
                   setProgress(data.progress)
                   setStatus(`Scanning... ${data.progress.checked}/${data.progress.total} stocks (${data.progress.found} found, ${clientFiltered} filtered out)`)
                   break
+                }
 
-                case 'batch_complete':
+                case 'batch_complete': {
                   setProgress(data.progress)
                   setStatus(`Batch ${data.batch_number} complete • ${data.progress.found} opportunities found`)
                   console.log('📦 Batch complete:', data.batch_number, 'Progress:', data.progress)
                   break
+                }
                   
-                case 'complete':
+                case 'complete': {
                   const summary = data.summary
                   console.log('✅ Scan complete summary:', summary)
                   console.log('🔍 Client-side filtering stats:', {
@@ -190,6 +193,7 @@ function App() {
                   setStatus(`Scan complete! Found ${summary.total_found} opportunities, ${clientFiltered} filtered out by market cap, ${stocks.length} displayed`)
                   setIsScanning(false)
                   return
+                }
                   
                 default:
                   console.log('🔍 Unknown message type:', data.type, data)

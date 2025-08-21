@@ -1,13 +1,15 @@
 import { Button } from "./ui/button"
 
+interface Filters {
+  minMarketCap: number
+  minDropPercentage: number
+  timeRange: string
+  maxRsi: number
+}
+
 interface FilterControlsProps {
-  filters: {
-    minMarketCap: number
-    minDropPercentage: number
-    timeRange: string
-    maxRsi: number
-  }
-  onFiltersChange: (filters: any) => void
+  filters: Filters
+  onFiltersChange: (filters: Filters) => void
   onStartScreening: () => void
   onStopScreening: () => void
   isScanning: boolean
@@ -75,7 +77,7 @@ export function FilterControls({
     { value: 50, label: '50 (Neutral)' }
   ]
 
-  const handleFilterChange = (key: string, value: any) => {
+  const handleFilterChange = (key: keyof Filters, value: string | number) => {
     onFiltersChange({
       ...filters,
       [key]: value
