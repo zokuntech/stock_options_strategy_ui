@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
 import { StockCard } from './components/StockCard'
 import { FilterControls } from './components/FilterControls'
+import { VixIndicator } from './components/VixIndicator'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
 
@@ -242,17 +243,26 @@ function App() {
       <div className="w-full">
         {/* Header */}
         <div className="mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2">
-            Oversold Stocks to Watch
-          </h1>
-          <p className="text-gray-400 text-base sm:text-lg">
-            Filter and find the best opportunities across ~500 S&P 500 stocks
-          </p>
-          {universeInfo.size > 0 && (
-            <div className="mt-2 text-sm text-gray-500">
-              Universe: {universeInfo.size.toLocaleString()} S&P 500 stocks
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+            <div className="flex-1">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2">
+                Oversold Stocks to Watch
+              </h1>
+              <p className="text-gray-400 text-base sm:text-lg">
+                Filter and find the best opportunities across ~500 S&P 500 stocks
+              </p>
+              {universeInfo.size > 0 && (
+                <div className="mt-2 text-sm text-gray-500">
+                  Universe: {universeInfo.size.toLocaleString()} S&P 500 stocks
+                </div>
+              )}
             </div>
-          )}
+            
+            {/* VIX Indicator - Compact */}
+            <div className="flex-shrink-0">
+              <VixIndicator />
+            </div>
+          </div>
         </div>
 
         {/* Filter Controls */}
