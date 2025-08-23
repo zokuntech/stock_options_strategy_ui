@@ -34,7 +34,6 @@ export function VixIndicator() {
       try {
         setLoading(true)
         const apiUrl = `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'}/vix`
-        console.log('🎯 Fetching VIX from:', apiUrl)
         
         const response = await fetch(apiUrl)
         
@@ -43,8 +42,6 @@ export function VixIndicator() {
         }
         
         const data = await response.json()
-        console.log('📊 VIX Response:', data)
-        console.log('🔢 VIX Level:', data.vix_level)
         setVixData(data)
         setError(null)
       } catch (err) {
