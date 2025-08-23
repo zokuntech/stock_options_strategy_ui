@@ -78,7 +78,7 @@ export function StockCard({ stock }: StockCardProps) {
               </div>
             </div>
             {isHighOpportunity && (
-              <div className="text-xs font-medium text-orange-400 bg-orange-900 px-2 py-1 rounded whitespace-nowrap flex-shrink-0 w-fit">
+              <div className="text-xs font-medium text-green-400 bg-green-900 px-2 py-1 rounded whitespace-nowrap flex-shrink-0 w-fit">
                 HIGH OPPORTUNITY
               </div>
             )}
