@@ -1,5 +1,5 @@
 aws_region              = "us-west-2"
-project_name            = "stock-screener"
+project_name            = "stock-options-strategy-ui"
 environment             = "prod"
 domain_name             = "your-domain.com"  # Replace with your actual domain
 cloudfront_price_class  = "PriceClass_All"

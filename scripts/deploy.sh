@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Deploy script for Stock Screener
+# Deploy script for Stock Options Strategy UI
 # Usage: ./scripts/deploy.sh [environment]
 
 set -e
@@ -9,7 +9,7 @@ ENVIRONMENT=${1:-dev}
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 
-echo "🚀 Deploying Stock Screener to $ENVIRONMENT environment..."
+echo "🚀 Deploying Stock Options Strategy UI to $ENVIRONMENT environment..."
 
 # Check if environment file exists
 if [ ! -f "$PROJECT_ROOT/terraform/environments/$ENVIRONMENT.tfvars" ]; then

@@ -1,4 +1,4 @@
-name: Deploy Stock Screener
+name: Deploy Stock Options Strategy UI
 
 on:
   push:
@@ -47,7 +47,7 @@ jobs:
       - name: Build for production
         env:
           VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL || 'http://localhost:8000' }}
-          VITE_APP_NAME: "Stock Screener"
+          VITE_APP_NAME: "Stock Options Strategy UI"
           VITE_ENVIRONMENT: "production"
         run: npm run build
 
@@ -103,11 +103,28 @@ jobs:
         working-directory: ./terraform
         run: terraform apply dev.tfplan
 
+      - name: Verify Terraform State
+        working-directory: ./terraform
+        run: |
+          echo "🔍 Checking Terraform state..."
+          terraform state list
+          echo "📊 Verifying S3 bucket exists..."
+          terraform state show aws_s3_bucket.website
+
       - name: Get deployment outputs
         id: terraform-output
         working-directory: ./terraform
         run: |
-          echo "bucket_name=$(terraform output -raw s3_bucket_name)" >> $GITHUB_OUTPUT
+          echo "📋 Terraform Outputs:"
+          terraform output
+          echo "📦 Getting bucket name..."
+          BUCKET_NAME=$(terraform output -raw website_bucket_name)
+          echo "Bucket name: $BUCKET_NAME"
+          if [ -z "$BUCKET_NAME" ]; then
+            echo "❌ Error: Bucket name is empty!"
+            exit 1
+          fi
+          echo "bucket_name=$BUCKET_NAME" >> $GITHUB_OUTPUT
           echo "cloudfront_distribution_id=$(terraform output -raw cloudfront_distribution_id)" >> $GITHUB_OUTPUT
           echo "website_url=$(terraform output -raw website_url)" >> $GITHUB_OUTPUT
 

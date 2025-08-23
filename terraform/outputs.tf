@@ -31,4 +31,10 @@ output "website_url" {
 output "certificate_arn" {
   description = "ARN of the ACM certificate (if domain is provided)"
   value       = var.domain_name != "" ? aws_acm_certificate.cert[0].arn : null
+}
+
+# Legacy output for backward compatibility
+output "s3_bucket_name" {
+  description = "Name of the S3 bucket hosting the website (legacy alias)"
+  value       = aws_s3_bucket.website.bucket
 } 

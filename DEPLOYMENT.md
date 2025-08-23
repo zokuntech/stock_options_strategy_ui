@@ -1,6 +1,6 @@
-# Stock Screener Deployment Guide
+# Stock Options Strategy UI Deployment Guide
 
-This guide covers the complete deployment process for the Stock Screener application using GitHub Actions, Terraform, and AWS.
+This guide covers the complete deployment process for the Stock Options Strategy UI application using GitHub Actions, Terraform, and AWS.
 
 ## 🏗️ **Architecture Overview**
 
