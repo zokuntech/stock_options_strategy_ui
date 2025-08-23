@@ -92,12 +92,34 @@ jobs:
         working-directory: ./terraform
         run: terraform init
 
+      - name: Import Existing Resources (if needed)
+        working-directory: ./terraform
+        run: |
+          echo "🔍 Checking for existing resources that need importing..."
+          
+          # Try to import S3 bucket if it exists but not in state
+          if ! terraform state show aws_s3_bucket.website >/dev/null 2>&1; then
+            echo "📦 Importing S3 bucket..."
+            terraform import aws_s3_bucket.website "stock-options-strategy-ui-dev-website" || echo "⚠️ S3 import failed or already exists"
+          fi
+          
+          # Try to import CloudFront OAC if it exists but not in state
+          if ! terraform state show aws_cloudfront_origin_access_control.website >/dev/null 2>&1; then
+            echo "🌐 Importing CloudFront OAC..."
+            OAC_ID=$(aws cloudfront list-origin-access-controls --query "OriginAccessControlList.Items[?Name=='stock-options-strategy-ui-dev-oac'].Id | [0]" --output text 2>/dev/null || echo "None")
+            if [ "$OAC_ID" != "None" ] && [ "$OAC_ID" != "" ]; then
+              terraform import aws_cloudfront_origin_access_control.website "$OAC_ID" || echo "⚠️ OAC import failed or already exists"
+            fi
+          fi
+
       - name: Terraform Plan
         working-directory: ./terraform
         run: |
           terraform plan \
             -var-file=environments/dev.tfvars \
             -out=dev.tfplan
+
+
 
       - name: Terraform Apply
         working-directory: ./terraform
