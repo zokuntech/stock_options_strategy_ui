@@ -85,26 +85,22 @@ export function FilterControls({
   }
 
   return (
-    <div className="bg-gray-800 rounded-lg p-6 mb-8">
+    <div className="bg-gray-800 rounded-lg p-4 sm:p-6 mb-6 sm:mb-8">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold text-white">Filter Options</h2>
+        <h2 className="text-lg sm:text-xl font-semibold text-white">Filter Options</h2>
         <div className="text-sm text-gray-400">
-          {universeInfo?.type === 'comprehensive' ? (
+          {universeInfo?.size ? (
             <span>
-              Comprehensive Universe: {universeInfo?.size?.toLocaleString() || '5,185+'} stocks
-            </span>
-          ) : universeInfo?.size ? (
-            <span>
-              {universeInfo?.type === 'sp500_fallback' ? 'S&P 500' : 'Stock Universe'}: {universeInfo.size.toLocaleString()} stocks
+              S&P 500: {universeInfo.size.toLocaleString()} stocks
             </span>
           ) : (
-            <span>Scanning across comprehensive stock universe</span>
+            <span>Scanning across S&P 500 stocks</span>
           )}
         </div>
       </div>
       
       {/* Filter Controls Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-6">
         
         {/* Market Cap Filter */}
         <div>
@@ -184,15 +180,15 @@ export function FilterControls({
       </div>
 
       {/* Action Buttons and Status */}
-      <div className="flex gap-4 items-center mb-4">
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-start sm:items-center mb-4">
         {!isScanning ? (
           <Button
             onClick={onStartScreening}
             className="bg-blue-600 hover:bg-blue-700"
           >
-            {universeInfo?.type === 'comprehensive' && universeInfo?.size ? 
+            {universeInfo?.size ? 
               `Start Screening ${universeInfo.size.toLocaleString()} Stocks` : 
-              'Start Comprehensive Screening'
+              'Start S&P 500 Screening'
             }
           </Button>
         ) : (
@@ -212,18 +208,14 @@ export function FilterControls({
 
         {/* Progress Stats */}
         {progress && progress.total > 0 && (
-          <div className="flex gap-4 text-sm">
+          <div className="flex flex-wrap gap-2 sm:gap-4 text-xs sm:text-sm">
             <div className="bg-blue-600 text-white px-3 py-1 rounded-full">
               Scanned: {progress.checked}/{progress.total}
             </div>
             <div className="bg-green-600 text-white px-3 py-1 rounded-full">
               Found: {progress.found}
             </div>
-            {universeInfo?.type === 'comprehensive' && (
-              <div className="bg-purple-600 text-white px-3 py-1 rounded-full">
-                Comprehensive Universe
-              </div>
-            )}
+
             {progress.total > 500 && (
               <div className="bg-orange-600 text-white px-3 py-1 rounded-full">
                 Large Scale Scan

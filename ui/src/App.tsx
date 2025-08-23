@@ -50,7 +50,7 @@ function App() {
         min_market_cap: filters.minMarketCap,
         max_results: 500,  // Request all possible results
         force_refresh: true,  // Force fresh data
-        use_comprehensive_universe: true  // Use the full 5,185+ stock universe
+        use_comprehensive_universe: false  // Use the S&P 500 stock universe (~500 stocks)
       }
 
       // Debug: Log the request being sent
@@ -109,7 +109,7 @@ function App() {
                     size: data.universe_size || data.total_symbols,
                     type: data.universe_type || 'unknown'
                   })
-                  setStatus(`Scanning ${data.total_symbols} stocks from ${data.universe_type === 'comprehensive' ? 'comprehensive universe' : 'S&P 500'}...`)
+                  setStatus(`Scanning ${data.total_symbols} stocks from S&P 500...`)
                   
                   // Debug: Log filters being applied
                   console.log('📝 Backend filters:', data.filters)
@@ -238,19 +238,19 @@ function App() {
   const sortedStocks = [...stocks].sort((a, b) => a.dailyChangePct - b.dailyChangePct)
 
   return (
-    <div className="min-h-screen bg-gray-900 p-6 w-full">
+    <div className="min-h-screen bg-gray-900 p-4 sm:p-6 w-full">
       <div className="w-full">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2">
             Oversold Stocks to Watch
           </h1>
-          <p className="text-gray-400 text-lg">
-            Filter and find the best opportunities across {universeInfo.type === 'comprehensive' ? '5,185+ stocks (S&P 500 + Russell 1000)' : 'all S&P 500 stocks'}
+          <p className="text-gray-400 text-base sm:text-lg">
+            Filter and find the best opportunities across ~500 S&P 500 stocks
           </p>
           {universeInfo.size > 0 && (
             <div className="mt-2 text-sm text-gray-500">
-              Universe: {universeInfo.size.toLocaleString()} stocks • {universeInfo.type === 'comprehensive' ? 'Comprehensive (S&P 500 + Russell 1000)' : 'S&P 500'}
+              Universe: {universeInfo.size.toLocaleString()} S&P 500 stocks
             </div>
           )}
         </div>
@@ -269,7 +269,7 @@ function App() {
 
         {/* Stock Grid */}
         {stocks.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 sm:gap-6">
             {sortedStocks.map((stock, index) => (
               <StockCard key={`${stock.ticker}-${index}`} stock={stock} />
             ))}
@@ -278,26 +278,26 @@ function App() {
 
         {/* Empty State - Only show when not scanning and no stocks */}
         {stocks.length === 0 && !isScanning && (
-          <div className="text-center py-20">
-            <div className="text-6xl mb-4">📊</div>
-            <h3 className="text-xl font-semibold text-gray-300 mb-2">
+          <div className="text-center py-12 sm:py-20 px-4">
+            <div className="text-4xl sm:text-6xl mb-4">📊</div>
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-300 mb-2">
               Ready to find oversold stocks?
             </h3>
-            <p className="text-gray-500">
-              Configure your filters above and click "Start Screening" to discover opportunities across 5,185+ stocks
+            <p className="text-sm sm:text-base text-gray-500 max-w-md mx-auto">
+              Configure your filters above and click "Start Screening" to discover opportunities across ~500 S&P 500 stocks
             </p>
           </div>
         )}
 
         {/* Loading State */}
         {isScanning && stocks.length === 0 && (
-          <div className="text-center py-20">
-            <div className="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
-            <div className="text-gray-400 text-lg">
-              Scanning comprehensive stock universe...
+          <div className="text-center py-12 sm:py-20 px-4">
+            <div className="animate-spin w-6 sm:w-8 h-6 sm:h-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+            <div className="text-gray-400 text-base sm:text-lg">
+              Scanning S&P 500 stocks...
             </div>
             {universeInfo.size > 0 && (
-              <div className="text-gray-500 text-sm mt-2">
+              <div className="text-gray-500 text-xs sm:text-sm mt-2">
                 Analyzing {universeInfo.size.toLocaleString()} stocks
               </div>
             )}
