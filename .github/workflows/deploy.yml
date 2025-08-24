@@ -116,14 +116,14 @@ jobs:
         working-directory: ./terraform
         run: |
           terraform plan \
-            -var-file=environments/prod.tfvars \
-            -out=prod.tfplan
+            -var-file=environments/dev.tfvars \
+            -out=dev.tfplan
 
 
 
       - name: Terraform Apply
         working-directory: ./terraform
-        run: terraform apply prod.tfplan
+        run: terraform apply dev.tfplan
 
       - name: Verify Terraform State
         working-directory: ./terraform
