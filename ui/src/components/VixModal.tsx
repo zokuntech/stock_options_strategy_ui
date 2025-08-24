@@ -1,5 +1,6 @@
 import { Card, CardContent } from "./ui/card"
 
+
 interface VixData {
   vix_level: number
   sentiment: string
