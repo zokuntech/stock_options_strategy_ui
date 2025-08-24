@@ -245,12 +245,12 @@ function App() {
         <div className="mb-6 sm:mb-8">
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
             <div className="flex-1">
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2">
-                Oversold Stocks to Watch
-              </h1>
-              <p className="text-gray-400 text-base sm:text-lg">
-                Filter and find the best opportunities across ~500 S&P 500 stocks
-              </p>
+                        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2">
+            Snipe the Dip
+          </h1>
+                        <p className="text-gray-400 text-base sm:text-lg">
+            Find oversold opportunities across ~500 S&P 500 stocks
+          </p>
               {universeInfo.size > 0 && (
                 <div className="mt-2 text-sm text-gray-500">
                   Universe: {universeInfo.size.toLocaleString()} S&P 500 stocks
