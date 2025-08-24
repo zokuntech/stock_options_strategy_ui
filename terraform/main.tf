@@ -199,14 +199,33 @@ resource "aws_acm_certificate" "cert" {
   }
 }
 
+# DNS validation records for ACM certificate
+resource "aws_route53_record" "cert_validation" {
+  for_each = var.domain_name != "" ? {
+    for dvo in aws_acm_certificate.cert[0].domain_validation_options : dvo.domain_name => {
+      name   = dvo.resource_record_name
+      record = dvo.resource_record_value
+      type   = dvo.resource_record_type
+    }
+  } : {}
+
+  allow_overwrite = true
+  name            = each.value.name
+  records         = [each.value.record]
+  ttl             = 60
+  type            = each.value.type
+  zone_id         = data.aws_route53_zone.main[0].zone_id
+}
+
 resource "aws_acm_certificate_validation" "cert" {
   count           = var.domain_name != "" ? 1 : 0
   certificate_arn = aws_acm_certificate.cert[0].arn
+  validation_record_fqdns = var.domain_name != "" ? [for record in aws_route53_record.cert_validation : record.fqdn] : []
   
   provider = aws.us_east_1
 
   timeouts {
-    create = "5m"
+    create = "10m"  # Increased timeout
   }
 }
 
